@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Files;
+use App\File;
+use App\User;
 use Illuminate\Http\Request;
 
 class FileController extends Controller
@@ -12,9 +13,12 @@ class FileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($userId)
     {
-        //
+        $user = User::firstWhere('id', $userId);
+        $publicKey = $user->public_key;
+        $files = File::where('uploader_public_key', $publicKey)->get();
+        return response()->json($files);
     }
 
     /**
@@ -44,9 +48,14 @@ class FileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($fileId)
     {
-        $files = Files::where('uploader_public_key', $id);
+        $file = File::firstWhere('id', $fileId);
+        $dir = $file->title . ".txt";
+        $file_link = fopen($dir, "x");
+        $content = $file->content;
+        fwrite($file_link, $content);
+        fclose($file_link);
     }
 
     /**

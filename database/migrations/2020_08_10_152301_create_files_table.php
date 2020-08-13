@@ -18,6 +18,8 @@ class CreateFilesTable extends Migration
             $table->string('title');
             $table->longText('content');
             $table->text('uploader_public_key');
+            $table->string('status');
+            $table->string('link');
             $table->timestamps();
         });
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
+Route::get('files/{id}', 'FileController@index');
+Route::get('file/{id}', 'FileController@show');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
