@@ -19,6 +19,7 @@ Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 Route::get('files/{id}', 'FileController@index');
 Route::get('file/{id}', 'FileController@show');
+Route::post('file', 'FileController@store');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
