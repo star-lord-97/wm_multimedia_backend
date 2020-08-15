@@ -121,7 +121,7 @@ class FileController extends Controller
             'extension' => $ext,
             'dir' => $dir,
             'uploader_public_key' => $request->json()->get("public_key"),
-            'status' => "Public", //$request->json()->get("status"),
+            'status' => $request->json()->get("status"),
             'link' => ""
         ]);
 
