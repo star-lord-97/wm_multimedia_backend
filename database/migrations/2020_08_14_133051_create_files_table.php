@@ -17,7 +17,7 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('extension');
-            $table->binary('content');
+            $table->string('dir');
             $table->text('uploader_public_key');
             $table->string('status');
             $table->string('link');

@@ -62,7 +62,7 @@ class FileController extends Controller
         $ext = end($y);
 
         // get dir from $file_name
-        $dir = "C:\Users\\" . getenv("username") . "\Desktop\\" . $file_name;
+        $dir = "C:\Users\\" . getenv("username") . "\Desktop\SafeBox Uploads\\" . $file_name;
 
         // adding the corresponding header to each content type and getting the file's content
         if (strtolower($ext) == "pdf") {
@@ -98,9 +98,12 @@ class FileController extends Controller
                 // getting the current iteration file's uploader public key
                 $publickey = $file->uploader_public_key;
 
+                // get the current iteration file content
+                $content = file_get_contents($file->dir);
+
                 // loading the current user private key to sign the current iteration file
                 $rsa->loadKey($privatekey);
-                $signature = $rsa->sign($file->content);
+                $signature = $rsa->sign($content);
 
                 // loading the uploader's public key to compare the new file's content with the current file's signature
                 $rsa->loadKey($publickey);
@@ -116,7 +119,7 @@ class FileController extends Controller
         $new_file = File::create([
             'title' => $request->json()->get('name'),
             'extension' => $ext,
-            'content' => $new_file_content,
+            'dir' => $dir,
             'uploader_public_key' => $request->json()->get("public_key"),
             'status' => "Public", //$request->json()->get("status"),
             'link' => ""
@@ -127,7 +130,7 @@ class FileController extends Controller
         $new_file->update(['link' => $link]);
 
         // returning a message to the front-end to OK everything
-        return response("done");
+        return response("uploaded");
     }
 
     /**
@@ -148,7 +151,7 @@ class FileController extends Controller
         $extension = $file->extension;
 
         // get the file content from the db
-        $content = $file->content;
+        $content = file_get_contents($file->dir);
 
         // get the directory in which the file will be downloaded
         $dir = "C:\Users\\" . getenv("username") . "\Downloads\SafeBox Downloads\\" . $title . "." . $extension;
