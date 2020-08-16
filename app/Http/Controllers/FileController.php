@@ -109,7 +109,7 @@ class FileController extends Controller
                 $rsa->loadKey($publickey);
                 if ($rsa->verify($new_file_content, $signature)) {
                     // if verified AKA already in the db, return a message with the uploader's name and exits
-                    return response("file already uploaded by " . $user->name);
+                    return response("This file was already uploaded by " . $user->name);
                     exit;
                 }
             }
@@ -130,7 +130,7 @@ class FileController extends Controller
         $new_file->update(['link' => $link]);
 
         // returning a message to the front-end to OK everything
-        return response("uploaded");
+        return response("Uploaded");
     }
 
     /**
